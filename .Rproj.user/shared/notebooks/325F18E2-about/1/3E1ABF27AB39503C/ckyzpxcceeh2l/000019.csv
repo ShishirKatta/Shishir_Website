@@ -1,0 +1,3 @@
+"0","table(FIFA_22_Mens_Players_Data$league_name,FIFA_22_Mens_Players_Data$wage_eur))"
+"2","Error: unexpected ')' in ""table(FIFA_22_Mens_Players_Data$league_name,FIFA_22_Mens_Players_Data$wage_eur))""
+"

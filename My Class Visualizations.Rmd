@@ -1,0 +1,199 @@
+---
+title: "My class Visualizations"
+date: '2022-04-18'
+color1: '#5A59A3'
+color2: '#C66060'
+angle: 130
+site: distill::distill_website
+---
+ links:
+  - label: YouTube
+    url: "https://youtube.com/"
+  - label: Vimeo
+    url: "https://vimeo.com/"
+  - label: Twitter
+    url: "https://twitter.com/"
+  - label: Email
+    url: "mailto:email@email.com"
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+Here are some of my visualizations:
+
+```{r}
+library(tidyverse)
+library(vctrs)
+library(ggplot2)
+library(Lock5Data)
+library(Hmisc)
+```
+
+## Including Plots
+```{r}
+temp.df <-
+  data.frame(
+    Month = c(
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+),
+Ave = c(
+      25.47874,
+      26.74252,
+      35.95354,
+      47.16614,
+      57.89055,
+      66.24488,
+      70.56535,
+      68.71339,
+      62.06457,
+      50.85354,
+      39.65276,
+      29.51181
+),
+SD = c(
+      4.787328,
+      4.627446,
+      4.193812,
+      2.697477,
+      2.908238,
+      2.052049,
+      1.868255,
+      2.108575,
+      2.289816,
+      2.877604,
+      2.944077,
+      4.252238
+) )
+temp.df
+
+temp.df$Month = factor(
+  temp.df$Month,
+  levels = c(
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ),
+  ordered = TRUE
+)
+
+library(ggplot2)
+ggplot(temp.df, aes(x = Month, y = Ave, group = SD)) +
+  geom_errorbar(aes(ymin = Ave - SD, ymax = Ave + SD),
+                width = 0.2, position = position_dodge(0.9)) +
+  geom_dotplot(binaxis = 'y', stackdir = 'center')+
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+```{r}
+set.seed(230)
+pop2 = rexp(1000, 2)
+
+ggplot() +
+  geom_histogram(
+    aes(x = pop2, y = ..density..),
+    bins = 25,
+    fill = "#E87722",
+    alpha = .75
+  ) + geom_density(aes(x = pop2), col = "#003865") +
+  xlab("Population Values") +
+  ggtitle("Distribution of the Population")
+
+sampl.means100 = NULL 
+for (i in 1:1000) {
+  sampl.means100[i] = mean(sample(pop2, 100))
+}
+sampl.means10 = NULL 
+for (i in 1:1000) {
+  sampl.means10[i] = mean(sample(pop2, 10))
+}
+
+ggplot() +
+  geom_histogram(
+    aes(x = sampl.means100, y = ..density..),
+    bins = 100,
+    fill = "#E87722",
+    alpha = 0.75) +
+    geom_density(aes(x = pop2), col = "#003865") +
+      xlab("Population Values") +
+      ggtitle("Distribution of the Population")
+
+ggplot() +geom_histogram(aes(x = sampl.means10, y = ..density..),
+    bins = 100,
+    fill = "#E87722",
+    alpha = 0.75
+  )+  geom_density(aes(x = pop2), col = "#003865") +
+  xlab("Population Values") +
+  ggtitle("Distribution of the Population")
+```
+
+## Generative art!
+
+```{r}
+library(aRtsy)
+```
+
+Note that the author recommends saving your artwork to a file since it will often take a lot of time and RAM to render in RStudio. e.g.
+
+```{r}
+artwork <- canvas_strokes(colors = c("black", "white"))
+saveCanvas(artwork, filename = "myArtwork.png")
+```
+
+
+```{r}
+set.seed(1)
+canvas_nebula(colors = colorPalette("neon1"))
+```
+
+
+```{r}
+canvas_collatz(
+  colors = colorPalette("neon1"),
+  n = 800,
+  background = "blue",
+  angle.even = 0.0075,
+  angle.odd = 0.0145,
+  side = FALSE
+)
+```
+
+
+```{r}
+set.seed(1)
+angles <- matrix(0, 200, 200)
+angles[1:100, ] <- seq(from = 0, to = 2 * pi, length = 100)
+angles[101:200, ] <- seq(from = 2 * pi, to = 0, length = 100)
+angles <- angles + rnorm(200 * 200, sd = 0.1)
+canvas_flow(
+  colors = colorPalette("dark2"),
+  background = "orange",
+  lines = 1500,
+  lwd = 0.5,
+  iterations = 100,
+  stepmax = 0.01,
+  angles = NULL
+) 
+```
+

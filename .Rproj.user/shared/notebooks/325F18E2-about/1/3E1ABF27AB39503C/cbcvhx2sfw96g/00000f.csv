@@ -1,0 +1,4 @@
+"0","ggplot(FIFA_22_Mens_Players_Data, aes(work_rate ,value_eur))+geom_col()"
+"2","Warning:"
+"2"," Removed 74 rows containing missing values (position_stack).
+"

@@ -1,0 +1,41 @@
+---
+title: "My Website: Shishir"
+description: |
+  Welcome to the website. I hope you enjoy it!
+site: distill::distill_website
+color1: "#5A59A3"
+color2: "#C66060"
+angle: 130
+links:
+  - label: School Email
+    url: "smk037@bucknell.edu"
+  - label: Private Email
+    url: "shishirkatta2@gmail.com"
+  - label: Phone number
+    url: "+1(570)-415-9489"
+output:
+  postcards::onofre
+---
+
+This is the website for Shishir Katta.
+ 
+I am a student at Bucknell University in Lewisburg, Pennsylvanian. I am a Psychology major, with minors in Statistics and Economics. I am International student who was born and brought up in Bangalore, India. 
+
+```{r}
+library(distill)
+library(postcards)
+
+```
+
+
+create_article(file = "about", # Future name of the .Rmd file
+               template = "onofre", # name of the template
+               package = "postcards") # package that includes the template
+create_article(file = "Visualizations", # Future name of the .Rmd file
+               template = "onofre", # name of the template
+               package = "postcards") # package that includes the template
+create_article(file = "Visualizations", # Future name of the .Rmd file
+               template = "onofre", # name of the template
+               package = "postcards") # package that includes the template
+               
+               

@@ -1,0 +1,2 @@
+"0","artwork <- canvas_strokes(colors = c(""black"", ""white""))"
+"0","saveCanvas(artwork, filename = ""myArtwork.png"")"

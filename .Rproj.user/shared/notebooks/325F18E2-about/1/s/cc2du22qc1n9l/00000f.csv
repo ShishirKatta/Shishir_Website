@@ -1,0 +1,23 @@
+"0","p = ggplot() +"
+"0","    geom_map("
+"0","      data = map, map = map,"
+"0","      aes(long, , map_id = region),"
+"0","      alpha=0.7"
+"0","    ) +"
+"0","    geom_point(data=FIFA_22_Mens_Players_Data, "
+"0","               aes(long, lat,"
+"0","                   size=people_partially_vaccinated,"
+"0","                   color=country_region),"
+"0","               alpha = 0.6) +"
+"0","    scale_size(range=c(1, 6)) +"
+"0","    labs(size=""Partially\nVacc Rate"") +"
+"0","    scale_colour_discrete(guide = ""none"") +"
+"0","    labs(title = 'COVID-19 Partial Vaccination Rate\n"
+"0","         Date: {frame_time}') +"
+"0","    transition_time(date) +"
+"0","    ease_aes('elastic-in')"
+"1","[1m[33mError[39m in [38;5;232m`geom_map()`[39m:[22m
+[33m![39m `map` must be a data.frame
+Backtrace:
+[90m 1. [39mggplot2::geom_map(...)
+"

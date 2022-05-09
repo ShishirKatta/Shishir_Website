@@ -1,0 +1,5 @@
+"0","tinytex::reinstall_tinytex()"
+"2","sh: tlmgr: command not found
+"
+"2","Error in system2(""tlmgr"", args, ...) : error in running command
+"

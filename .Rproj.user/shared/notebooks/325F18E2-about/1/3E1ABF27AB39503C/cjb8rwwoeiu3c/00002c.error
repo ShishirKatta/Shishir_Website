@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error: Incomplete expression: ggplot(FIFA_22_Mens_Players_Data, aes(x=wage_eur, pace)+geom_col(aes(colour=international_reputation))\n"}

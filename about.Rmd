@@ -1,0 +1,237 @@
+---
+title: "Shishir's Website"
+description: 
+  Some additional details about the website
+color1: "#5A59A3"
+color2: "#C66060"
+angle: 130
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+```{r}
+library(readxl)
+FIFA_22_Mens_Players_Data <- read_excel("~/Desktop/DATA VIZ/FIFA 22 Mens Players Data.xlsx")
+```
+
+
+```{r}
+library(tidyverse)
+library(vctrs)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+attach(FIFA_22_Mens_Players_Data)
+```
+
+Here is my visualizations:
+
+The FIFA22 dataset contains all key attributes, and features of male football players around the world. In this analysis, I focus on major attributes to see relationship between common variables such as;
+
+1. Potential & wages.
+2. Reputation & Value.
+3. Reputation and wages
+4. Height and potential.
+
+I also answer questions such as;
+what are the height, wage, weight and age distribution of players?
+What is the prevalent foot amount players?
+What are the countries with the highest representation in the data?
+What are the most common player position?
+Who are the highest paid players?
+Who are the best players overall?
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(preferred_foot))+ 
+  geom_histogram(stat="count")
+
+```
+
+```{r}
+
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(potential ,wage_eur))+geom_point(aes(colour=international_reputation))
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(potential ,value_eur))+geom_point(aes(colour=international_reputation))+theme_dark()
+```
+
+# I want to group player earnings based on their work rate
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(height_cm ,wage_eur))+geom_col()+theme_dark()
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data)+geom_boxplot(aes(factor(skill_moves) ,pace))+theme_dark()
+ggplot(FIFA_22_Mens_Players_Data)+geom_boxplot(aes(factor(skill_moves) ,physic))+theme_dark()
+ggplot(FIFA_22_Mens_Players_Data)+geom_jitter(aes(factor(skill_moves) ,factor(international_reputation)))
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(pace ,wage_eur))+geom_col()
+```
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(defending ,wage_eur))+geom_point(aes(colour=international_reputation))
+```
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(pace ,wage_eur))+geom_point(aes(colour=international_reputation))
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(passing ,wage_eur))+geom_point(aes(colour=international_reputation))
+```
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(age ,wage_eur))+geom_point(aes(colour=international_reputation))
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(work_rate ,wage_eur))+geom_col()
+```
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(work_rate ,value_eur))+geom_col()
+```
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(league_level , pace))+geom_col()
+```
+
+```{}
+table(FIFA_22_Mens_Players_Data$nationality_name)
+sort(table(FIFA_22_Mens_Players_Data$nationality_name), decreasing = TRUE)[1:3] 
+ggplot(FIFA_22_Mens_Players_Data, aes(x=nationality_name))+geom_bar()
+
+```
+
+```{}
+ggplot(FIFA_22_Mens_Players_Data, aes(x=player_positions))+geom_bar()+options(axis.text.x = theme_text(angle=90))
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(club_position, wage_eur), na.rm=TRUE)+geom_col()
+```
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(x=league_level,
+                        y=wage_eur,
+                        color=international_reputation,
+                        group=international_reputation)) +
+                    stat_summary(geom = "smooth", fun=sum) +
+                    labs(title="Trends of Confirmed Cases",
+                         color="International reputation") +
+                    xlab("League Level") +
+                    ylab("Wage")
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(wage_eur)) + geom_area(stat="bin")
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(pace)) + geom_area(stat="bin")
+```
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(pace)) + geom_histogram()
+```
+z
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(age)) + geom_area(stat="bin")
+```
+```{r}
+ggplot() +
+  geom_histogram(aes(x = defending, y = ..density..), bins = 25, fill = "#E87722", alpha = .75)
+  geom_density(aes(x = defending), col = "#003865")
+```
+
+```{r}
+sampl.means100=NULL 
+for(i in 1:1000){
+  sampl.means100[i]=mean(sample(international_reputation, 100))
+}
+sampl.means10=NULL 
+for(i in 1:1000){
+  sampl.means10[i]=mean(sample(international_reputation, 10))
+}
+
+ggplot() +
+  geom_histogram(aes(x = sampl.means10, y = ..density..), bins = 100, fill = "#E87722", alpha = 0.75) +
+  geom_density(aes(x = international_reputation), col = "#003865")
+```
+
+```{}
+table(FIFA_22_Mens_Players_Data$league_name,FIFA_22_Mens_Players_Data$wage_eur))
+```
+```{}
+ggplot(FIFA_22_Mens_Players_Data, aes(x=wage_eur, pace)+geom_col(aes(colour=international_reputation))
+```
+```{}
+[mydata$sex=="M",c("person","age","funny","age.mon")]
+```
+
+```{}
+library(ggmap)
+library(dplyr)
+help("get_map")
+mapdata <- map_data("world")
+
+View(mapdata)
+colnames(FIFA_22_Mens_Players_Data)[colnames(FIFA_22_Mens_Players_Data)=="nationality_name"]<-"region"
+
+mapdata<-left_join(mapdata, FIFA_22_Mens_Players_Data, by = "region")
+View(mapdata)
+```
+
+
+
+
+```{}
+mapdata1<- filter(mapdata, !is.na(mapdata$sofifa_id))
+View(mapdata1)
+```
+
+worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
+  geom_path() +
+  scale_y_continuous(breaks=(-2:2) * 30) +
+  scale_x_continuous(breaks=(-4:4) * 45)
+
+#this works
+worldmap + geom_point(aes(50, 30, colour="red"))
+
+#world.map<- get_map("World", zoom =)
+
+```{}
+p = ggplot() +
+    geom_map(
+      data = map, map = map,
+      aes(long, , map_id = region),
+      alpha=0.7
+    ) +
+    geom_point(data=FIFA_22_Mens_Players_Data, 
+               aes(long, lat,
+                   size=people_partially_vaccinated,
+                   color=country_region),
+               alpha = 0.6) +
+    scale_size(range=c(1, 6)) +
+    labs(size="Partially\nVacc Rate") +
+    scale_colour_discrete(guide = "none") +
+    labs(title = 'COVID-19 Partial Vaccination Rate\n
+         Date: {frame_time}') +
+    transition_time(date) +
+    ease_aes('elastic-in')
+    
+animate(p, fps=4)
+```
+
+```{r}
+help(geom_map)
+```
+

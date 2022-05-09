@@ -1,0 +1,7 @@
+"0","ggplot(FIFA_22_Mens_Players_Data, aes(defending ,wage_eur))+geom_point(aes(colour=international_reputation))+geom_col()"
+"2","Warning:"
+"2"," Removed 2185 rows containing missing values (position_stack).
+"
+"2","Warning:"
+"2"," Removed 2185 rows containing missing values (geom_point).
+"

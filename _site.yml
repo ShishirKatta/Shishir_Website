@@ -1,0 +1,18 @@
+name: "Shishir_Website"
+title: "My Website"
+description: |
+  My Website
+output_dir: "docs"
+navbar:
+  right:
+  - text: "Semester project"
+    href: index.html
+    menu:
+      - text: "About Me"
+        href: index.html
+      - text: "FIFA DATA ANALYSIS"
+        href: about.html
+      - text: "My Visualizations"
+        href: Visualizations.html
+
+output: distill::distill_article

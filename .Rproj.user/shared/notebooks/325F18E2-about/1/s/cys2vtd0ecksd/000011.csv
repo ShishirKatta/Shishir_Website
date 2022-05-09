@@ -1,0 +1,3 @@
+"0","library(readxl)"
+"0","FIFA_22_Mens_Players_Data <- read_excel(""~/Desktop/DATA VIZ/FIFA 22 Mens Players Data.xlsx"")"
+"0","View(FIFA_22_Mens_Players_Data)"
