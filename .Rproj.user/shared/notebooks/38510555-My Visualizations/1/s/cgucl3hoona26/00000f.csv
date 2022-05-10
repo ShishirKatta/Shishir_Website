@@ -1,8 +1,0 @@
-"0","canvas_collatz("
-"0","  colors = colorPalette(""neon1""),"
-"0","  n = 800,"
-"0","  background = ""blue"","
-"0","  angle.even = 0.0075,"
-"0","  angle.odd = 0.0145,"
-"0","  side = FALSE"
-"0",")"

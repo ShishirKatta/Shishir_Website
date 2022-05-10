@@ -1,0 +1,225 @@
+---
+title: "My Visualizations"
+date: '2022-04-18'
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+knitr:include_graphics(filename.png)
+
+Here are some of my visualizations:
+
+```{r}
+
+```
+
+```{r}
+library(tidyverse)
+library(vctrs)
+library(ggplot2)
+library(Lock5Data)
+library(Hmisc)
+library(ggalluvial)
+library(aRtsy)
+library(Lock5Data)
+```
+
+## Including Plots
+```{r}
+temp.df <-
+  data.frame(
+    Month = c(
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+),
+Ave = c(
+      25.47874,
+      26.74252,
+      35.95354,
+      47.16614,
+      57.89055,
+      66.24488,
+      70.56535,
+      68.71339,
+      62.06457,
+      50.85354,
+      39.65276,
+      29.51181
+),
+SD = c(
+      4.787328,
+      4.627446,
+      4.193812,
+      2.697477,
+      2.908238,
+      2.052049,
+      1.868255,
+      2.108575,
+      2.289816,
+      2.877604,
+      2.944077,
+      4.252238
+) )
+temp.df
+
+temp.df$Month = factor(
+  temp.df$Month,
+  levels = c(
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ),
+  ordered = TRUE
+)
+
+library(ggplot2)
+ggplot(temp.df, aes(x = Month, y = Ave, group = SD)) +
+  geom_errorbar(aes(ymin = Ave - SD, ymax = Ave + SD),
+                width = 0.2, position = position_dodge(0.9)) +
+  geom_dotplot(binaxis = 'y', stackdir = 'center')+
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+```{r}
+set.seed(230)
+pop2 = rexp(1000, 2)
+
+ggplot() +
+  geom_histogram(
+    aes(x = pop2, y = ..density..),
+    bins = 25,
+    fill = "#E87722",
+    alpha = .75
+  ) + geom_density(aes(x = pop2), col = "#003865") +
+  xlab("Population Values") +
+  ggtitle("Distribution of the Population")
+
+sampl.means100 = NULL 
+for (i in 1:1000) {
+  sampl.means100[i] = mean(sample(pop2, 100))
+}
+sampl.means10 = NULL 
+for (i in 1:1000) {
+  sampl.means10[i] = mean(sample(pop2, 10))
+}
+
+ggplot() +
+  geom_histogram(
+    aes(x = sampl.means100, y = ..density..),
+    bins = 100,
+    fill = "#E87722",
+    alpha = 0.75) +
+    geom_density(aes(x = pop2), col = "#003865") +
+      xlab("Population Values") +
+      ggtitle("Distribution of a sample of 100 people")
+
+ggplot() +geom_histogram(aes(x = sampl.means10, y = ..density..),
+    bins = 100,
+    fill = "#E87722",
+    alpha = 0.75
+  )+  geom_density(aes(x = pop2), col = "#003865") +
+  xlab("Population Values") +
+  ggtitle("Distribution of a sample of 10 people")
+```
+
+## My Generative art!
+
+```{r}
+library(aRtsy)
+```
+
+Note that the author recommends saving your artwork to a file since it will often take a lot of time and RAM to render in RStudio. e.g.
+
+```{r}
+artwork <- canvas_strokes(colors = c("black", "white"))
+saveCanvas(artwork, filename = "myArtwork.png")
+```
+
+
+```{r}
+set.seed(1)
+canvas_nebula(colors = colorPalette("neon1"))
+```
+
+
+```{r}
+canvas_collatz(
+  colors = colorPalette("neon1"),
+  n = 800,
+  background = "blue",
+  angle.even = 0.0075,
+  angle.odd = 0.0145,
+  side = FALSE
+)
+```
+
+
+```{r}
+set.seed(1)
+angles <- matrix(0, 200, 200)
+angles[1:100, ] <- seq(from = 0, to = 2 * pi, length = 100)
+angles[101:200, ] <- seq(from = 2 * pi, to = 0, length = 100)
+angles <- angles + rnorm(200 * 200, sd = 0.1)
+canvas_flow(
+  colors = colorPalette("dark2"),
+  background = "orange",
+  lines = 1500,
+  lwd = 0.5,
+  iterations = 100,
+  stepmax = 0.01,
+  angles = NULL
+) 
+```
+
+## My previous class project!
+
+Laurence, Tom and I worked on R project earlier this semested where we had to teach our class how to work with ggalluvial package. We used Arthritis data from a double-blind clinical trial investigating a new treatment for rheumatoid arthritis. The data consisted of 5 variables: The patient ID, treatment factor, gender, age, and improvement factor.Alluvial plots can serve as a kind of tracking plot mechanism to see how we can get from point A to B. 
+
+The thickness of each section refers to the size corresponding to the next level. The total number of splits can be found by multiplying the amount of levels each categorical variable has; meaning that in our 2 variable example would be 2(Gender levels: male and female) * 2(Treatment levels: placebo or treated) * 3(Improvement outcome levels: None, Some, and Marked), giving us a total of 12 bands from beginning to end.
+
+```{}
+data(Arthritis)
+AgeType = cut(Arthritis $ Age,
+                   breaks = c(quantile(Arthritis $ Age, 0),
+                   quantile(Arthritis $ Age, 1/3),
+                   quantile(Arthritis $ Age, 2/3),
+                   quantile(Arthritis $ Age, 1)),
+                   include.lowest = TRUE,
+                   labels = c("young","medium","old"))
+Arthritis $ AgeType = AgeType
+table(Arthritis $ AgeType)
+```
+
+## My R shiny app
+
+Here is a link to my rshiny application:
+
+An interactive sliding tool enables users to choose the sample size, confidence level, and number of confidence intervals shown. Here is an example of what our Shiny program may generate if the user selects a confidence level of 85 percent, 100 confidence intervals, and a sample size of 100. 
+
+Here's a like the link to my rshiny application. I hope you enjoy looking at it!
+
+https://rconnect.bucknell.edu/content/c9c7fa3a-0fbf-4c42-b4e7-19e6950f0564/
+
+

@@ -25,6 +25,9 @@ library(tidyverse)
 library(vctrs)
 library(ggplot2)
 library(dplyr)
+library(plotly)
+library(ggpubr)
+library(ggExtra)
 ```
 
 ```{r}
@@ -33,205 +36,126 @@ attach(FIFA_22_Mens_Players_Data)
 
 Here is my visualizations:
 
-The FIFA22 dataset contains all key attributes, and features of male football players around the world. In this analysis, I focus on major attributes to see relationship between common variables such as;
 
-1. Potential & wages.
-2. Reputation & Value.
-3. Reputation and wages
-4. Height and potential.
+The FIFA22 data set contains all key attributes, and features of male football players around the world. In this analysis, I focus on major attributes to see relationship between common variables such as Potential, wages, Reputation, Value and other player information. 
 
-I also answer questions such as;
-what are the height, wage, weight and age distribution of players?
-What is the prevalent foot amount players?
-What are the countries with the highest representation in the data?
-What are the most common player position?
-Who are the highest paid players?
-Who are the best players overall?
+We know that most soccer players tend to be portrayed by social media as extremely gifted players who can do crazy stunts with their feet. In today's analysis, I will focus on debunking this myth that soccer players actually extremely gifted. 
+
+## Here is the analysis of some Player demographics: Height, age, Weight
+
+Using the FIFA 22 data set we get access to some interesting variables and can conduct detailed analyses. If we were to take a look at the actual player demographics, we can see whether there may or may not be a truth to the myth regarding soccer player.
+
 
 ```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(preferred_foot))+ 
-  geom_histogram(stat="count")
-
-```
-
-```{r}
-
-```
-
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(potential ,wage_eur))+geom_point(aes(colour=international_reputation))
-```
-
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(potential ,value_eur))+geom_point(aes(colour=international_reputation))+theme_dark()
-```
-
-# I want to group player earnings based on their work rate
-
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(height_cm ,wage_eur))+geom_col()+theme_dark()
-```
-
-```{r}
-ggplot(FIFA_22_Mens_Players_Data)+geom_boxplot(aes(factor(skill_moves) ,pace))+theme_dark()
-ggplot(FIFA_22_Mens_Players_Data)+geom_boxplot(aes(factor(skill_moves) ,physic))+theme_dark()
-ggplot(FIFA_22_Mens_Players_Data)+geom_jitter(aes(factor(skill_moves) ,factor(international_reputation)))
-```
-
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(pace ,wage_eur))+geom_col()
+a3<- ggplot(FIFA_22_Mens_Players_Data, aes(height_cm))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient(low="red", high="yellow")+xlab("Distribution of Height in cm")
 ```
 ```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(defending ,wage_eur))+geom_point(aes(colour=international_reputation))
+a2<- ggplot(FIFA_22_Mens_Players_Data, aes(weight_kg))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient(low="red", high="yellow")+xlab("Distribution of Weight in kgs")
 ```
 ```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(pace ,wage_eur))+geom_point(aes(colour=international_reputation))
+a1<- ggplot(FIFA_22_Mens_Players_Data, aes(age))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient(low="red", high="yellow")+xlab("Distribution of Age in years")
 ```
+
+Here we can see the histograms of the distribution of the "Height in cm", "Weight in kgs" and "Age" of the players. 
 
 ```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(passing ,wage_eur))+geom_point(aes(colour=international_reputation))
+figure1 <- ggarrange(
+                     a1,
+                     ggarrange(a2, a3, ncol = 2, labels = c("B", "C")),
+                     nrow = 2,
+                     labels = c("A"))
+figure1 + ggtitle("Distribution of player Attributes")
 ```
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(age ,wage_eur))+geom_point(aes(colour=international_reputation))
-```
+What can we learn from each graph?
 
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(work_rate ,wage_eur))+geom_col()
-```
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(work_rate ,value_eur))+geom_col()
-```
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(league_level , pace))+geom_col()
-```
-
-```{}
-table(FIFA_22_Mens_Players_Data$nationality_name)
-sort(table(FIFA_22_Mens_Players_Data$nationality_name), decreasing = TRUE)[1:3] 
-ggplot(FIFA_22_Mens_Players_Data, aes(x=nationality_name))+geom_bar()
-
-```
-
-```{}
-ggplot(FIFA_22_Mens_Players_Data, aes(x=player_positions))+geom_bar()+options(axis.text.x = theme_text(angle=90))
-```
+ A = A shows the distribution of age of all the players in the FIFA 22 data set. We can see that centered around the age of 26, with uni modal, symmetrical shape that appears to be right skewed . There is a fairly large range for the data with ages ranging from 15 to 40. Most players do hit their prime in their early 20s so it makes sense that the data is centered around the age of 22 and with a right skew.
+ 
+ B = B shows that the distribution of weight is actually fairly normal/symmetrical and unimodal. The center of the data looks to be around 75kgs with a range between 60 to 90 kgs. This is not surprising but debunks the myth of how people think players are almost god like. If we look here we see that most of the players are within the normal range of weight. No similar to the rest of us. This also makes sense as defenders tend to need to be more physically built and heavier while attackers usually need to be quick and hence prefer weigh lesser. 
+ 
+ C = C shows that the distribution of height is, again, fairly normal/symmetrical . The center of the data looks to be around 180 cms  with a range between 160 to 200 cms. However, there is appears to be bimodal as there seem to be two prominent peaks. This suggests that players tend to get clustered into two groups of heights and not a lot of players who are in between the two peaks actually exist. Firstly, we can see that the height of all the players is similar the average human height even if it is slightly left-skewed from the world. We can see here that most players are, in fact, around the average height but there are also a lot of players who are above the avergae height. This is not surprising because of the requirements of Defenders and Attackers often needing to head the boal to protect or score a goal. 
+ 
+Therefore, it is clear that soccer players are similar to humans but lets actually take a look at how the compare with each other in terms of their actual attributes.
 
 ```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(club_position, wage_eur), na.rm=TRUE)+geom_col()
+a<-ggplot(FIFA_22_Mens_Players_Data, aes(pace))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient2(low = "red", high = "blue", mid = "white", midpoint = 25)+theme(legend.title = element_blank())+ theme(legend.position='none') +xlab("Distribution of Pace")
+
+b<-ggplot(FIFA_22_Mens_Players_Data, aes(shooting))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient2(low = "red", high = "blue", mid = "white", midpoint = 25)+xlab("Distribution of Shooting")
+
+c<-ggplot(FIFA_22_Mens_Players_Data, aes(dribbling))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient2(low = "red", high = "blue", mid = "white", midpoint = 25)+theme(legend.title = element_blank())+ theme(legend.position='none')+xlab("Distribution of Dribbling")
+
+d<-ggplot(FIFA_22_Mens_Players_Data, aes(passing))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient2(low = "red", high = "blue", mid = "white", midpoint = 25)+xlab("Distribution of Passing")
+
+e<-ggplot(FIFA_22_Mens_Players_Data, aes(physic))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient2(low = "red", high = "blue", mid = "white", midpoint = 25)+xlab("Distribution of Physic")+theme(legend.title = element_blank())+ theme(legend.position='none')
+
+f<-ggplot(FIFA_22_Mens_Players_Data, aes(defending))+ geom_histogram(aes(fill = ..x..))+scale_fill_gradient2(low = "red", high = "blue", mid = "white", midpoint = 25)+xlab("Distribution of Defending")
+
+figure <- ggarrange(a,
+                    b,
+                    c,
+                    d,
+                    e,
+                    f,
+                    labels = c("A", "B", "C", "D", "E", "F"),
+                    ncol = 2, nrow = 3)
+figure
 ```
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(x=league_level,
-                        y=wage_eur,
-                        color=international_reputation,
-                        group=international_reputation)) +
-                    stat_summary(geom = "smooth", fun=sum) +
-                    labs(title="Trends of Confirmed Cases",
-                         color="International reputation") +
-                    xlab("League Level") +
-                    ylab("Wage")
-```
+From these various graphs we can learn a lot about the attributes of most players:
+  A: This graph is depicting the distribution of pace for players. It has center of 70 with a range between 40 to 90. This translates to range of about 12 to 20 seconds to complete a 100 m race. Most people who are physically fit and healthy can easily run at that pace. Moreover, the distribution is again unimodal and symmetrical indicating that a lot of players live within this range. This is again debunks the myth that soccer players are crazy fast as most players can actually run at normal speed. 
+  
+  B: This graph is depicting the distribution of dribbling for players. It has center of 75 with a range between 30 to 90. Moreover, the distribution is unimodal but left skewed indicating that a lot of players live within this range. However, this is where we come to see why soccer players are great. It takes immense practice to be able to gain the skills of ball control like them and there is still a very large range inters of players capabilities in handling the situation. This we cannot speak towards whether we can learn anthing from this stat. 
+  
+  C: This graph is depicting the distribution  physicality and toughness of players. It has center of 70 with a range between 30 to 90. Moreover, the distribution is again unimodal but only a slight left skewed. This is indicating that a lot of players again live within this range, however, this is where we come to see why soccer players can be considered crazy again. Even with their normal wight, and height, soccer players are definately much more physically well-built, tough and strong. 
+  
+  D: This graph is depicting the distribution of Passing for players. This arguable most symetrical graph with a center of 60 with a range from 30 to 90. This graph is unimodal and shows that players do tend to have higher passing statistics in general but again we can see a large range here. 
+  
+  E: This graph is depicting the distribution of Physic for players. It has center of 50 with a range between 30 to 90. Most people who are physically fit and healthy can easily run at that pace are never able to achieve this level of physicallity with intense discipline. Moreover, the distribution is again unimodal and symmetrical indicating that a lot of players live within this large range. This is again debunks the myth that soccer players are crazy strong or big as most players can actually fall all across the range. 
+  
+  F: This graph is depicting the distribution of Defending for players. This probably the most interesting graph as we see almost a bimodal relationship with a large range between 10 and 90. This is not surprising as attackers are usually very bad at defending. So if you assumed that any soccer player must be amazng at defending, it is only due to practice and the data shows no specific center. 
 
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(wage_eur)) + geom_area(stat="bin")
-```
+Thus we can see how there player demographics and understanding of the distribution of the players attributes can shed light on the false perception we have about players in sports. In the next section, I will dive deeper by looking at how these attributes can shed light on some of the ways in which we can see how players utlize their skills to perform well in games. Its really an effect of practice and less about raw phsyical talent. 
 
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(pace)) + geom_area(stat="bin")
-```
-
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(pace)) + geom_histogram()
-```
-z
-```{r}
-ggplot(FIFA_22_Mens_Players_Data, aes(age)) + geom_area(stat="bin")
-```
-```{r}
-ggplot() +
-  geom_histogram(aes(x = defending, y = ..density..), bins = 25, fill = "#E87722", alpha = .75)
-  geom_density(aes(x = defending), col = "#003865")
-```
-
-```{r}
-sampl.means100=NULL 
-for(i in 1:1000){
-  sampl.means100[i]=mean(sample(international_reputation, 100))
-}
-sampl.means10=NULL 
-for(i in 1:1000){
-  sampl.means10[i]=mean(sample(international_reputation, 10))
-}
-
-ggplot() +
-  geom_histogram(aes(x = sampl.means10, y = ..density..), bins = 100, fill = "#E87722", alpha = 0.75) +
-  geom_density(aes(x = international_reputation), col = "#003865")
-```
-
-```{}
-table(FIFA_22_Mens_Players_Data$league_name,FIFA_22_Mens_Players_Data$wage_eur))
-```
-```{}
-ggplot(FIFA_22_Mens_Players_Data, aes(x=wage_eur, pace)+geom_col(aes(colour=international_reputation))
-```
-```{}
-[mydata$sex=="M",c("person","age","funny","age.mon")]
-```
-
-```{}
-library(ggmap)
-library(dplyr)
-help("get_map")
-mapdata <- map_data("world")
-
-View(mapdata)
-colnames(FIFA_22_Mens_Players_Data)[colnames(FIFA_22_Mens_Players_Data)=="nationality_name"]<-"region"
-
-mapdata<-left_join(mapdata, FIFA_22_Mens_Players_Data, by = "region")
-View(mapdata)
-```
-
-
-
-
-```{}
-mapdata1<- filter(mapdata, !is.na(mapdata$sofifa_id))
-View(mapdata1)
-```
-
-worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
-  geom_path() +
-  scale_y_continuous(breaks=(-2:2) * 30) +
-  scale_x_continuous(breaks=(-4:4) * 45)
-
-#this works
-worldmap + geom_point(aes(50, 30, colour="red"))
-
-#world.map<- get_map("World", zoom =)
-
-```{}
-p = ggplot() +
-    geom_map(
-      data = map, map = map,
-      aes(long, , map_id = region),
-      alpha=0.7
-    ) +
-    geom_point(data=FIFA_22_Mens_Players_Data, 
-               aes(long, lat,
-                   size=people_partially_vaccinated,
-                   color=country_region),
-               alpha = 0.6) +
-    scale_size(range=c(1, 6)) +
-    labs(size="Partially\nVacc Rate") +
-    scale_colour_discrete(guide = "none") +
-    labs(title = 'COVID-19 Partial Vaccination Rate\n
-         Date: {frame_time}') +
-    transition_time(date) +
-    ease_aes('elastic-in')
-    
-animate(p, fps=4)
-```
+## Understanding wages and value
 
 ```{r}
-help(geom_map)
+ ggplot(FIFA_22_Mens_Players_Data, aes(passing, defending)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", color = "grey")+theme(legend.title = element_blank())+ theme(legend.position='none') + xlab("Passing")+ ylab("Defending")+ ggtitle("Counter plot of Passing vs Defending")
 ```
+If we were to study the above counter map. This map looks at the interaction of the player attributes of defending and passing. Often times defenders must be great passers, but as we can see  here, great passers don't need to be good at defending. This  is seen when see that there are two elevations  around (30, 50) and at (60, 60). The passing attribute is also spread across the map but the defending like in the distribution we saw earier has almost a bimoal relationship. This means that being good at passing is essential to becoming better and it's not that defenders are automatically good at passing either. 
+
+```{r}
+ ggplot(FIFA_22_Mens_Players_Data, aes(pace, dribbling)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", color = "grey")+ggtitle("Counter plot of Passing vs Dribbling")
+```
+Now when we take a look at this counter map, we can see how pace and dribbline are quite interelated. There is an elevation at (70, 65) which is fairly high for players and there seems to be positive trend in the relationship between these two varibales. We can see that as pace increasing the dribbling scores also go up with it. This could show the importance of practice as a lot of soccer drills actually involve speed training, acceleration, positioning all with the ball. They may be some level of interaction due to other factors but that does not mean that soccer players are again very fast and very good at dribbling. 
+
+The previous assessment is however quite doubtful so lets look at some further evidence as to how speed varies across the players international reputation. From the density graphs below, we can identify that higher the international reputation, there is likely to be higher range when a player gets better at football. We can see players that with a score of 5 (Very reliable) have their peak at a higher pace and cover a larger range in comparison to player who had a score of 1 (Unreliable). Thus we can see the better players tend to have a higher pace and also tend to be more reliable when they have a higher pace. Regardless, we can also still see a large distribution or range for the pace of players. 
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(x = pace, y = ..density.., color = factor(international_reputation), fill =factor(international_reputation) )) +
+  geom_density(alpha = .1) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette ="Dark2") + theme_classic()+xlab("Pace of players")+ggtitle("Denisity plot of pace and International reputation")+theme(legend.title = element_blank())+ theme(legend.position='none')
+```
+Thus we come to an interesting varible to study: The work rate. ork Rates dictate where players position themselves on the pitch. Also known as Player Work Rate, it is the rate of a player’s behaviour on the pitch in terms of attacking and defensive works. The Work Rate is defined for Attacking (Attacking Work Rate – Abbreviated as AWR) and Defensive (Defensive Work Rate – Abbreviated as DWR) and rated between low, medium and high, which defines how a player puts effort to participates in attacks and defenses even when they are out of position.
+
+A high attacking work rate implies that the player is going to be in all of your attack moves. With medium, he will select the attack actions he will join. A player with low attacking work rate will remain in his position while the team attacks. With the defense, it is exactly the same but in the opposite direction.
+
+What can we learn from the previous graph from a glance. Most of the players work rate tend to be highly associated with the normal body type. As players work rate increase, whether attacking or defending, the players also seem to have normal weight and a normal body type. Only the low-low work rate members so a higher level of stocky build while the leaner players seem to show a higher work rate, be in attacking or at defending. 
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(x=work_rate, fill=body_type))+geom_bar(position="fill")+ theme_classic()+theme(axis.text.x = element_text(angle = 90))+ylab("Body Type of players")+xlab("Work Rate of Players: Attacking/Defending")+ggtitle("Conditional Bar of Body Type vs Work rate")
+```
+
+Moreover, when we comee back to the assessment of international repution we can see how well correlated it is with a players potential. As a player gets older, they are more likely to be given a higher potential. Each individual in FIFA  has a pre-programmed player potential which determines how fast their attributes should grow and when they should stop. You can think of it as a player’s predicted or peak overall rating. This is how we know which players are going to be wonderkids. While the scatterplot below may show no relationship with the player value or potential, when we include the color as international reputation, we can see how player with higher international reputation tend to be clustered around a higher a higher value and potential. Thus we can see that although players with lower potential dont possess all the stats required they will become better as they age and continue to play better. 
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(pace ,log(value_eur)))+geom_point(aes(colour=international_reputation))+theme_dark()+xlab("Potential")+ylab("Player Value in Euros")
+```
+We can bring this all together by taking a look at the graph below. In the scatterplot there are four broad variables being studied. We can see a positive trend occuring between mental composure and overall rating. This also consistent with the international reputation and the work rate of the players as we can see the players international reputation and work rate increasing with the overall rating. 
+
+```{r}
+ggplot(FIFA_22_Mens_Players_Data, aes(x = mentality_composure,  y = overall)) +
+    geom_point(aes(color = factor(work_rate), shape = factor(international_reputation)))+ xlab("Mental Composure")+ ylab("Overall player Rating")+ggtitle("Scatterplot of mental compusure vs overall rating")
+```
+Thus, I think it is pretty clear that while soccer players may seem inhuman, they are actually very much similar to most of us. We saw this when we analyzed the distribution of the players scores when we considered the background attributes and skills of that soccer players need. We can also see how training is integral to becoming a better player by looking at so many variables like age play a role in the potential of a player. Most soccer players are extremely good and can possibly be just as good. It is only through training and practice that these players are capable of getting a higher over all rating and are mentally strong enough to take on the challenge. Thank you!
 
